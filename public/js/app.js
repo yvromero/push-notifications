@@ -33,6 +33,9 @@ var modalAvatar = $('#modal-avatar');
 var avatarBtns  = $('.seleccion-avatar');
 var txtMensaje  = $('#txtMensaje');
 
+var btnActivadas    = $('.btn-noti-activadas');
+var btnDesactivadas = $('.btn-noti-desactivadas');
+
 // El usuario, contiene el ID del heroe seleccionado
 var usuario;
 
@@ -210,6 +213,21 @@ isOnline();
 
 
 // Notificaciones
+function verificaSuscripcion( activadas ){
+
+    if ( activadas ) {
+
+        btnActivadas.removeClass('oculto');
+        btnDesactivadas.addClass('oculto');
+
+    } else {
+        btnActivadas.addClass('oculto');
+        btnDesactivadas.removeClass('oculto');
+    }
+}
+
+verificaSuscripcion();
+
 
 function enviarNotificacion() {
 
@@ -250,5 +268,5 @@ function notificarme() {
 
 }
 
-notificarme();
+//notificarme();
 
