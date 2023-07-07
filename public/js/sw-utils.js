@@ -43,8 +43,11 @@ function actualizaCacheStatico( staticCache, req, APP_SHELL_INMUTABLE ) {
 // Network with cache fallback / update
 function manejoApiMensajes( cacheName, req ) {
 
+    if ( (req.url.indexOf('/api/key') >= 0 ) || req.url.indexOf('/api/subscribe') >= 0) {
+        
+        return fetch( req );
 
-    if ( req.clone().method === 'POST' ) {
+    } else if ( req.clone().method === 'POST' ) {
         // POSTEO de un nuevo mensaje
 
         if ( self.registration.sync ) {
