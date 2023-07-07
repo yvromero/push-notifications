@@ -11,7 +11,7 @@ webpush.setVapidDetails(
     vapid.privateKey
 );
 
-const suscripciones = [];
+const suscripciones = require('./subs-db.json');
 
 
 module.exports.getKey = () => {
@@ -24,5 +24,17 @@ module.exports.addSubscripcion = ( suscripcion ) => {
     suscripciones.push( suscripcion );
 
     fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify( suscripciones ));
+
+};
+
+
+module.exports.sendPush = ( post ) => {
+
+    suscripciones.forEach( (suscripcion, i) => {
+
+        webpush.sendNotification( suscripcion , 'Hola Mundo');
+
+    });
+
 
 };

@@ -129,6 +129,13 @@ self.addEventListener('sync', e => {
         e.waitUntil( respuesta );
     }
 
+});
 
+// Escucharr PUSH
+self.addEventListener('push', e => {
 
+    // console.log(e);
+    console.log(e.data.text());
+
+    
 });
