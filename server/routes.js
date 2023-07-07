@@ -52,7 +52,7 @@ router.get('/key', (req, res) => {
   
   const key = push.getKey();
 
-  res.json(key);
+  res.send(key);
 
 });
 
@@ -60,7 +60,7 @@ router.get('/key', (req, res) => {
 router.post('/push', (req, res) => {
 
   res.json('key publico');
- 
+
 });
   
 

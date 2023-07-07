@@ -1,17 +1,26 @@
 
 var url = window.location.href;
 var swLocation = '/twittor/sw.js';
-
+var swReg;
 
 if ( navigator.serviceWorker ) {
-
 
     if ( url.includes('localhost') ) {
         swLocation = '/sw.js';
     }
 
+    window.addEventListener('load', function() {
 
-    navigator.serviceWorker.register( swLocation );
+        navigator.serviceWorker.register( swLocation ).then( function(reg){
+
+            swReg = reg;
+            swReg.pushManager.getSubscription().then( verificaSuscripcion );
+
+
+        });
+
+    });
+
 }
 
 
@@ -226,7 +235,7 @@ function verificaSuscripcion( activadas ){
     }
 }
 
-verificaSuscripcion();
+// verificaSuscripcion();
 
 
 function enviarNotificacion() {
@@ -268,5 +277,40 @@ function notificarme() {
 
 }
 
-//notificarme();
+// notificarme();
 
+// Get Key
+function getPublicKey() {
+
+    return fetch('api/key')
+        .then( res => res.arrayBuffer())
+        .then( key => new Uint8Array(key) );
+        // return arreglo como un UintBarray
+    // Prueba para verificar si obtiene la key
+    // fetch('api/key')
+    //     .then( res => res.text())
+    //     .then( console.log );
+}
+
+// getPublicKey().then( console.log );
+btnDesactivadas.on( 'click', function() {
+
+    if ( !swReg ) return console.log('No hay registro de SW');
+
+    getPublicKey().then( function( key ) {
+
+        swReg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: key
+        }).then( res => res.toJSON() )
+        .then( suscripcion => {
+
+            console.log(suscripcion);
+
+            verificaSuscripcion(suscripcion)
+        });
+
+
+    });
+
+});
