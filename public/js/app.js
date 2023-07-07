@@ -224,8 +224,6 @@ isOnline();
 // Notificaciones
 function verificaSuscripcion( activadas ){
 
-    console.log( activadas );
-
     if ( activadas ) {
 
         btnActivadas.removeClass('oculto');
@@ -314,7 +312,7 @@ btnDesactivadas.on( 'click', function() {
                 body: JSON.stringify( suscripcion )
             })
             .then( verificaSuscripcion )
-            .catch( console.log );
+            .catch( cancelarSuscripcion );
 
         });
 
@@ -322,3 +320,4 @@ btnDesactivadas.on( 'click', function() {
     });
 
 });
+

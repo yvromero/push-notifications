@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const urlsafeBase64 = require('urlsafe-base64');
 const vapid = require('./vapid.json');
 
@@ -13,6 +15,6 @@ module.exports.addSubscripcion = ( suscripcion ) => {
 
     suscripciones.push( suscripcion );
 
-    console.log( suscripciones );
+    fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify( suscripciones ));
 
 };
