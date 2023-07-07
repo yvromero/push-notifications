@@ -321,3 +321,18 @@ btnDesactivadas.on( 'click', function() {
 
 });
 
+// Cancelar suscripcion desde el front
+
+function cancelarSuscripcion() {
+
+    swReg.pushManager.getSubscription().then( subs => { // Obtener la suscripcion como obj subs
+
+        subs.unsubscribe().then( () => verificaSuscripcion(false) );// Llamar a unsubscribe y verifica falso para eliminar el efecto visual 
+
+    });
+
+}
+
+btnActivadas.on( 'click', function() {
+    cancelarSuscripcion();
+});
