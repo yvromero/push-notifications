@@ -32,7 +32,7 @@ module.exports.sendPush = ( post ) => {
 
     suscripciones.forEach( (suscripcion, i) => {
 
-        webpush.sendNotification( suscripcion , 'Hola Mundo');
+        webpush.sendNotification( suscripcion , post.titulo );
 
     });
 
