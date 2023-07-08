@@ -135,10 +135,70 @@ self.addEventListener('sync', e => {
 self.addEventListener('push', e => {
 
     // console.log(e);
-    console.log(e.data.text());
 
-    const title = e.data.text();
-    const options = {};
+    const data = JSON.parse(e.data.text() );
+
+
+    const title = data.titulo;
+    const options = {
+        body: data.cuerpo,
+        icon: `img/avatars/${ data.usuario }.jpg`,
+        badge: 'img/favicon.ico',
+        vibrate: [125,75,125,275,200,275,125,75,125,275,200,600,200,600],
+        openUrl: '/',
+        data: {
+            // url: 'https://google.com',
+            url: '/',
+            id: data.usuario
+        },
+        actions: [
+            {
+                action: 'spiderman-action',
+                title: 'Spiderman',
+                icon:'img/avatars/spiderman.jpg'
+            },
+            {
+                action: 'thor-action',
+                title: 'Thor',
+                icon:'img/avatars/thor.jpg'
+            }
+        ]
+    };
 
     e.waitUntil( self.registration.showNotification( title, options ) );
+});
+
+// Cuando se cierra la notificacion
+self.addEventListener('notificationclose', e => {
+    console.log('Notificacion cerrada', e );
+});
+
+// Cuando se hace click en la notificacion push
+self.addEventListener('notificationclick', e => {
+
+    const notificacion = e.notification;
+    const accion = e.action;
+
+    console.log({ notificacion, accion });
+// Redireccionar al hacer click en la notificacion
+
+    const respuesta = clients.matchAll()
+    .then( clientes => {
+
+        let cliente = clientes.find( c => {
+            return c.visibilityState === 'visible';
+        });
+
+        if ( cliente !== undefined ) {
+            cliente.navigate( notificacion.data.url );
+            cliente.focus();
+        } else {
+            clients.openWindow( notificacion.data.url );
+        }
+
+        return notificacion.close();
+
+    });
+
+    e.waitUntil( respuesta );
 });
